@@ -32,3 +32,14 @@ Crie um fork deste projeto, deixe-o público e compartilhe neste [link](https://
 
 Tente entender como o projeto está rodando antes de começar.
 Sempre que tiver dúvida, baseie-se em coisas que já foram feitas no projeto ou procure em fontes confiáveis.
+
+## Run
+
+```bash
+cp .env.example .env
+docker compose up -d --build
+pnpm run postinstall
+npx prisma migrate dev
+pnpm start
+
+```
