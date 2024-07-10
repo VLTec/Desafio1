@@ -1,17 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { NoteRepository } from '../../repositories/NoteRepository';
+
 import { Note } from '../../entities/Note';
+import { NoteRepository } from '../../repositories/NoteRepository';
 
 interface CreateNoteRequest {
   title: string;
   description: string;
+  user_id: string;
 }
 
 @Injectable()
 export class CreateNoteUseCase {
   constructor(private noteRepository: NoteRepository) {}
 
-  async execute({ title, description }: CreateNoteRequest) {
+  async execute({ title, description, user_id }: CreateNoteRequest) {
 
     if (!title) {
       throw new Error('Title is required')
@@ -19,7 +21,8 @@ export class CreateNoteUseCase {
 
     const note = new Note({
       title,
-      description
+      description,
+      user_id,
     });
 
     await this.noteRepository.create(note);

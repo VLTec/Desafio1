@@ -12,33 +12,34 @@ export class NotesController {
 
   @Post()
   async create(@Body() body: CreateNoteBody) {
-    const { title, description } = body
+    const { title, description, user_id } = body
 
     const note = await this.createNoteUseCase.execute({
       title,
       description,
+      user_id,
     })
 
     return NoteViewModel.toHttp(note)
   }
 
-  @Get()
-  findAll() {
-    // return this.notesService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.notesService.findAll();
+  // }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    // return this.notesService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.notesService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNoteBody: UpdateNoteBody) {
-    // return this.notesService.update(+id, updateNoteBody);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateNoteBody: UpdateNoteBody) {
+  //   return this.notesService.update(+id, updateNoteBody);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    // return this.notesService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.notesService.remove(+id);
+  // }
 }
