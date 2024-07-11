@@ -4,7 +4,7 @@ import { Replace } from 'src/types/replace';
 interface NoteSchema {
   userId: string;
   title: string;
-  description: string;
+  description: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,6 +19,7 @@ export class Note {
   ) {
     this.props = {
       ...props,
+      description: props.description || null,
       createdAt: props.createdAt || new Date(),
       updatedAt: props.updatedAt || new Date(),
     };
@@ -45,7 +46,7 @@ export class Note {
     this.props.updatedAt = updatedAt;
   }
 
-  get description(): string {
+  get description(): string | null {
     return this.props.description;
   }
 

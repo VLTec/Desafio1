@@ -22,6 +22,7 @@ export class UserController {
 
     return UserViewModel.toHttp(user);
   }
+
   @Get('exampleAuthenticatedRoute')
   async howGetUserValues(@Request() request: AuthenticatedRequestModel) {
     return request.user;

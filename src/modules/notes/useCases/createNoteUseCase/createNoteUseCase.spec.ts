@@ -20,8 +20,6 @@ describe('Create Note', () => {
       description: 'lorem ipsum',
     });
 
-    console.log(note);
-
     expect(noteRepositoryInMemory.notes).toEqual([note]);
   });
 });
