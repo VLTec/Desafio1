@@ -40,6 +40,6 @@ cp .env.example .env
 docker compose up -d --build
 pnpm run postinstall
 npx prisma migrate dev
-pnpm start
+pnpm dev
 
 ```

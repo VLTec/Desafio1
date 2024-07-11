@@ -7,9 +7,23 @@ import { AuthModule } from './infra/http/modules/auth/auth.module';
 import { NoteModule } from './infra/http/modules/note/note.module';
 import { UserModule } from './infra/http/modules/user/user.module';
 import { JwtAuthGuard } from './infra/http/modules/auth/guards/jwtAuth.guard';
+import { ConfigModule } from '@nestjs/config';
+import authConfig from './config/auth.config';
+import mailConfig from './config/mail.config';
 
 @Module({
-  imports: [DatabaseModule, UserModule, NoteModule, AuthModule, MailModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [mailConfig, authConfig],
+      envFilePath: ['.env'],
+    }),
+    DatabaseModule,
+    UserModule,
+    NoteModule,
+    AuthModule,
+    MailModule,
+  ],
   controllers: [],
   providers: [
     {

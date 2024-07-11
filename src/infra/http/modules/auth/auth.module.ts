@@ -8,17 +8,24 @@ import { SignInDTOValidateMiddleware } from './middleware/signInDTOValidate.midd
 import { SignInUseCase } from 'src/modules/auth/useCases/signInUsecase/signInUseCase';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from 'src/modules/auth/strategies/jwt.strategy';
-import { env } from 'src/env';
 import { SignUpUseCase } from 'src/modules/auth/useCases/signUpUseCase/signUpUseCase';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('auth.secret'),
+        signOptions: {
+          expiresIn: configService.get<string>('auth.expires'),
+        },
+      }),
+      inject: [ConfigService],
+    }),
     DatabaseModule,
     UserModule,
-    JwtModule.register({
-      secret: env.JWT_SECRET,
-      signOptions: { expiresIn: env.JWT_EXPIRE },
-    }),
   ],
   controllers: [AuthController],
   providers: [
