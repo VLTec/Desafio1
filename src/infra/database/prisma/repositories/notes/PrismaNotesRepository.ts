@@ -16,12 +16,14 @@ export class PrismaNoteRepository implements NoteRepository {
     });
   }
 
-  async findAll(userId: string): Promise<void> {
-    const note = await this.prisma.note.findMany({
+  async findAll(userId: string): Promise<Note[]> {
+    const notes = await this.prisma.note.findMany({
       where: {
         user_id: userId
       }
     })
+
+    return notes.map(PrismaNotesMapper.toDomain);
   }
 
   async findById(id: string): Promise<Note | null> {
