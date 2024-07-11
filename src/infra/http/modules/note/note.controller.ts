@@ -5,6 +5,7 @@ import { NoteViewModel } from './viewModel/noteViewModel';
 import { CreateNoteUseCase } from '@modules/notes/useCases/createNoteUseCase/createNoteUseCase';
 import { Auth, CurrentUser } from '../auth/decorators/currentUser';
 import { GetNoteByIdUseCase } from '@/modules/notes/useCases/getNoteByIdUseCase/getNoteByIdUseCase';
+import { GetAllUserNotesUseCase } from '@/modules/notes/useCases/getAllUserNotesUseCase/getAllUserNotesUseCase';
 
 @ApiTags('notes')
 @Controller('notes')
@@ -12,6 +13,7 @@ export class NoteController {
   constructor(
     private createNoteUseCase: CreateNoteUseCase,
     private getNoteByIdUseCase: GetNoteByIdUseCase,
+    private getAllUserNotesUseCase: GetAllUserNotesUseCase,
   ) {}
 
   @Post()
@@ -35,5 +37,14 @@ export class NoteController {
     });
 
     return NoteViewModel.toHttp(note);
+  }
+
+  @Get()
+  async getNotes(@CurrentUser() user: Auth) {
+    const notes = await this.getAllUserNotesUseCase.execute({
+      userId: user.id,
+    });
+
+    return notes.map(NoteViewModel.toHttp);
   }
 }
