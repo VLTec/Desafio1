@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   antrol-generate:
-    image: postgres
+    image: postgres:alpine
     container_name: desafio1
     environment:
       POSTGRES_USER: docker
