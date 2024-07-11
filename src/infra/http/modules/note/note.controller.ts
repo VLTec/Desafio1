@@ -6,11 +6,13 @@ import { CreateNoteUseCase } from '@modules/notes/useCases/createNoteUseCase/cre
 import { Auth, CurrentUser } from '../auth/decorators/currentUser';
 import { GetNoteByIdUseCase } from '@/modules/notes/useCases/getNoteByIdUseCase/getNoteByIdUseCase';
 import { GetAllUserNotesUseCase } from '@/modules/notes/useCases/getAllUserNotesUseCase/getAllUserNotesUseCase';
+import { MailService } from '@/modules/mail/services/mailService';
 
 @ApiTags('notes')
 @Controller('notes')
 export class NoteController {
   constructor(
+    private mailService: MailService,
     private createNoteUseCase: CreateNoteUseCase,
     private getNoteByIdUseCase: GetNoteByIdUseCase,
     private getAllUserNotesUseCase: GetAllUserNotesUseCase,
@@ -25,6 +27,8 @@ export class NoteController {
       title,
       description,
     });
+
+    this.mailService.sendNoteCreatedEmail(user.email);
 
     return NoteViewModel.toHttp(note);
   }

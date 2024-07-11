@@ -10,6 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: true,
   });
+
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory(errors: ValidationError[]) {

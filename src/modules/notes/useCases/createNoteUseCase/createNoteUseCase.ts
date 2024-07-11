@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { NoteRepository } from '../../repositories/NoteRepository';
 import { Note } from '../../entities/Note';
+import { MailService } from '@/modules/mail/services/mailService';
 
 interface CreateNoteRequest {
   userId: string;
