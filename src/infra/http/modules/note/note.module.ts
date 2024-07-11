@@ -5,6 +5,8 @@ import { CreateNoteUseCase } from '@modules/notes/useCases/createNoteUseCase/cre
 import { GetNoteByIdUseCase } from '@/modules/notes/useCases/getNoteByIdUseCase/getNoteByIdUseCase';
 import { GetAllUserNotesUseCase } from '@/modules/notes/useCases/getAllUserNotesUseCase/getAllUserNotesUseCase';
 import { MailService } from '@/modules/mail/services/mailService';
+import { RemoveNoteByIdUseCase } from '@/modules/notes/useCases/removeNoteByIdUseCase/removeNoteByIdUseCase';
+import { UpdateNoteUseCase } from '@/modules/notes/useCases/updateNoteUseCase/updateNoteUseCase';
 
 @Module({
   imports: [DatabaseModule],
@@ -14,6 +16,8 @@ import { MailService } from '@/modules/mail/services/mailService';
     CreateNoteUseCase,
     GetNoteByIdUseCase,
     GetAllUserNotesUseCase,
+    RemoveNoteByIdUseCase,
+    UpdateNoteUseCase,
 
     //mail
     MailService,
