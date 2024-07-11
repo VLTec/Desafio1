@@ -27,7 +27,7 @@ export class AuthController {
   @Post('signIn')
   @Public()
   @HttpCode(HttpStatus.OK)
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(LocalAuthGuard) 
   async signIn(@Request() request: AuthRequestModel) {
     const access_token = await this.signInUseCase.execute({
       user: request.user,

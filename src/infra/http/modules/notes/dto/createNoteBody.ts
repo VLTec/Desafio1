@@ -11,9 +11,4 @@ export class CreateNoteBody {
   @IsStringCustom()
   @ApiProperty()
   description: string;
-
-  @IsStringCustom()
-  @IsNotEmptyCustom()
-  @ApiProperty()
-  user_id: string;
 }
