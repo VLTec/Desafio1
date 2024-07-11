@@ -1,4 +1,3 @@
-import { compare } from 'bcrypt';
 import { NoteRepositoryInMemory } from '../../repositories/NoteRepositoryInMemory';
 import { CreateNoteUseCase } from './createNoteUseCase';
 
