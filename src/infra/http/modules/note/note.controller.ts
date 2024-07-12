@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   Put,
   Request,
@@ -41,8 +43,10 @@ export class NoteController {
     return allNotes;
   }
 
-  //   @Get()
-  //   async getOne() {}
+  @Get(':id')
+  async getOne(@Param('id', ParseIntPipe) id: number) {
+    return this.noteUseCase.findOne(id);
+  }
 
   //   @Put()
   //   async update() {}

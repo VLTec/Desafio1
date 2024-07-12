@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { NoteRepository } from '../repository/noteRepository';
 import { NoteBody } from 'src/infra/http/modules/note/dtos/noteBody';
+import { NoteNotFoundException } from '../exceptions/NoteNotFound';
 
 @Injectable()
 export class NoteUseCase {
@@ -21,5 +22,13 @@ export class NoteUseCase {
     const allNotes = await this.noteRepository.findAll(user_id);
 
     return allNotes;
+  }
+
+  async findOne(id: number) {
+    const note = await this.noteRepository.findOne(id);
+
+    if (!note) throw new NoteNotFoundException();
+
+    return note;
   }
 }

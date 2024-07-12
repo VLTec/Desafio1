@@ -18,13 +18,23 @@ export class PrismaNoteRepository {
     return newNote;
   }
 
-  async findAll(notes: Note) {
+  async findAll(user_id: string) {
     const allNotes = await this.prisma.note.findMany({
       where: {
-        user_id: notes.user_id,
+        user_id: user_id,
       },
     });
 
     return allNotes;
+  }
+
+  async findOne(id: number) {
+    const note = await this.prisma.note.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    return note;
   }
 }
