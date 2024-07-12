@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { CreateNoteBody } from './dto/createNoteBody';
-import { UpdateNoteBody } from './dto/updateNoteBody';
 import { ApiTags } from '@nestjs/swagger';
 import { NoteViewModel } from './viewModel/notesViewModel';
 import { CurrentUser, Auth } from '../auth/decorators/currentUser';
@@ -48,11 +47,17 @@ export class NotesController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateNoteBody: UpdateNoteBody) {
+  async update(
+    @Param('id') id: string,
+    @Body() body: CreateNoteBody,
+    @CurrentUser() user: Auth,
+  ) {
+    const { title, description } = body
     return await this.updateNoteUseCase.execute({
+      userId: user.id,
       id,
-      title: updateNoteBody.title || '',
-      description: updateNoteBody.description || '',
+      title,
+      description,
     });
   }
 

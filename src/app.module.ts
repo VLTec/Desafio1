@@ -8,10 +8,18 @@ import { NotesModule } from './infra/http/modules/notes/notes.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './infra/http/modules/auth/guards/jwtAuth.guard';
 
-// import { MailerModule } from '@nestjs-modules/mailer';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { ConfigModule } from '@nestjs/config';
 import { env } from './env';
 @Module({
-  imports: [DatabaseModule, UserModule, AuthModule, NotesModule],
+  imports: [
+    ConfigModule.forRoot(),
+    DatabaseModule,
+    UserModule,
+    AuthModule,
+    NotesModule,
+    MailerModule
+  ],
   controllers: [],
   providers: [
     {
