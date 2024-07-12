@@ -9,9 +9,9 @@ import {
   Put,
   Request,
 } from '@nestjs/common';
-import { NoteBody, NoteUpdateBody } from './dtos/noteBody';
 import { NoteUseCase } from 'src/modules/note/useCase/noteUseCase';
 import { AuthenticatedRequestModel } from '../auth/models/authenticatedRequestModel';
+import { NoteBody } from './dtos/noteBody';
 
 @Controller('notes')
 export class NoteController {
@@ -48,9 +48,9 @@ export class NoteController {
     return this.noteUseCase.findOne(id);
   }
 
-  @Put()
-  async update(@Body() body: NoteUpdateBody) {
-    const { id, note, title, description } = body;
+  @Put(':id')
+  async update(@Body() body: NoteBody, @Param('id', ParseIntPipe) id: number) {
+    const { note, title, description } = body;
     return this.noteUseCase.update({
       id,
       note,
