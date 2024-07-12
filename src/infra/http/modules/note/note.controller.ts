@@ -12,7 +12,9 @@ import {
 import { NoteUseCase } from 'src/modules/note/useCase/noteUseCase';
 import { AuthenticatedRequestModel } from '../auth/models/authenticatedRequestModel';
 import { NoteBody } from './dtos/noteBody';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('notes')
 @Controller('notes')
 export class NoteController {
   constructor(private noteUseCase: NoteUseCase) {}

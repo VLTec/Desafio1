@@ -1,16 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import {
-  NoteBody,
-  NoteUpdateBody,
-} from 'src/infra/http/modules/note/dtos/noteBody';
+import { NoteUpdateBody } from 'src/infra/http/modules/note/dtos/noteBody';
 import { NoteNotFoundException } from '../exceptions/NoteNotFound';
 import { NoteRepository } from '../repository/noteRepository';
+
+interface NoteProps {
+  user_id: string;
+  title: string;
+  description?: string;
+  note: string;
+}
 
 @Injectable()
 export class NoteUseCase {
   constructor(private noteRepository: NoteRepository) {}
 
-  async create({ note, title, description, user_id }: NoteBody) {
+  async create({ note, title, description, user_id }: NoteProps) {
     const createNote = await this.noteRepository.create({
       user_id,
       note,

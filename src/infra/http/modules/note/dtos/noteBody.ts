@@ -1,7 +1,13 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export class NoteBody {
-  user_id: string;
+  @ApiProperty()
   title: string;
+
+  @ApiProperty()
   description?: string;
+
+  @ApiProperty()
   note: string;
 }
 
