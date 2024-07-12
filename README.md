@@ -4,6 +4,17 @@
 
 Você deverá criar o famoso CRUD. Basicamente, pense que temos um aplicativo onde salvamos nossas notas. Cada usuário terá sua conta com suas devidas notas. Não esqueça que a API é pública, certifique-se de que segue os padrões de segurança e boas práticas. Não se preocupe muito com outras rotas, como a de criar usuário, que foi apenas criada para servir de exemplo. Siga os padrões já estabelecidos no código.
 
+## Run
+
+```bash
+cp .env.example .env
+docker compose up -d --build
+pnpm run postinstall
+npx prisma migrate dev
+pnpm dev
+
+```
+
 ## Docs
 
 http://localhost:3333/docs
@@ -32,14 +43,3 @@ Crie um fork deste projeto, deixe-o público e compartilhe neste [link](https://
 
 Tente entender como o projeto está rodando antes de começar.
 Sempre que tiver dúvida, baseie-se em coisas que já foram feitas no projeto ou procure em fontes confiáveis.
-
-## Run
-
-```bash
-cp .env.example .env
-docker compose up -d --build
-pnpm run postinstall
-npx prisma migrate dev
-pnpm dev
-
-```

@@ -1,5 +1,14 @@
 import { ApiTags } from '@nestjs/swagger';
 import { CreateNoteBody } from './dtos/createNoteBody';
+import { UpdateNoteBody } from './dtos/updateNoteBody';
+import { NoteViewModel } from './viewModel/noteViewModel';
+import { MailService } from '@/modules/mail/services/mailService';
+import { Auth, CurrentUser } from '../auth/decorators/currentUser';
+import { CreateNoteUseCase } from '@modules/notes/useCases/createNoteUseCase/createNoteUseCase';
+import { GetNoteByIdUseCase } from '@/modules/notes/useCases/getNoteByIdUseCase/getNoteByIdUseCase';
+import { GetAllUserNotesUseCase } from '@/modules/notes/useCases/getAllUserNotesUseCase/getAllUserNotesUseCase';
+import { RemoveNoteByIdUseCase } from '@/modules/notes/useCases/removeNoteByIdUseCase/removeNoteByIdUseCase';
+import { UpdateNoteUseCase } from '@/modules/notes/useCases/updateNoteUseCase/updateNoteUseCase';
 import {
   Body,
   Controller,
@@ -10,15 +19,6 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { NoteViewModel } from './viewModel/noteViewModel';
-import { CreateNoteUseCase } from '@modules/notes/useCases/createNoteUseCase/createNoteUseCase';
-import { Auth, CurrentUser } from '../auth/decorators/currentUser';
-import { GetNoteByIdUseCase } from '@/modules/notes/useCases/getNoteByIdUseCase/getNoteByIdUseCase';
-import { GetAllUserNotesUseCase } from '@/modules/notes/useCases/getAllUserNotesUseCase/getAllUserNotesUseCase';
-import { MailService } from '@/modules/mail/services/mailService';
-import { RemoveNoteByIdUseCase } from '@/modules/notes/useCases/removeNoteByIdUseCase/removeNoteByIdUseCase';
-import { UpdateNoteUseCase } from '@/modules/notes/useCases/updateNoteUseCase/updateNoteUseCase';
-import { UpdateNoteBody } from './dtos/updateNoteBody';
 
 @ApiTags('notes')
 @Controller('notes')
