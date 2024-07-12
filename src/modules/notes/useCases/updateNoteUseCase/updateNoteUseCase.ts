@@ -26,8 +26,6 @@ export class UpdateNoteUseCase {
     note.title = title;
     note.description = description;
 
-    await this.noteRepository.update(note);
-
-    return note;
+    return await this.noteRepository.update(note);
   }
 }

@@ -5,6 +5,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Post,
   Put,
@@ -17,6 +18,7 @@ import { GetAllUserNotesUseCase } from '@/modules/notes/useCases/getAllUserNotes
 import { MailService } from '@/modules/mail/services/mailService';
 import { RemoveNoteByIdUseCase } from '@/modules/notes/useCases/removeNoteByIdUseCase/removeNoteByIdUseCase';
 import { UpdateNoteUseCase } from '@/modules/notes/useCases/updateNoteUseCase/updateNoteUseCase';
+import { UpdateNoteBody } from './dtos/updateNoteBody';
 
 @ApiTags('notes')
 @Controller('notes')
@@ -46,21 +48,20 @@ export class NoteController {
   }
 
   @Put(':id')
+  @HttpCode(200)
   async updateNote(
     @Param('id') id: string,
-    @Body() body: CreateNoteBody,
+    @Body() body: UpdateNoteBody,
     @CurrentUser() user: Auth,
   ) {
     const { title, description } = body;
 
-    const note = await this.updateNoteUseCase.execute({
+    await this.updateNoteUseCase.execute({
       userId: user.id,
       noteId: id,
       title,
       description,
     });
-
-    return NoteViewModel.toHttp(note);
   }
 
   @Get(':id')
