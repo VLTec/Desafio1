@@ -15,6 +15,7 @@ import { GetNotesUseCase } from 'src/modules/note/useCases/createUserUseCase/get
 import { GetNoteUseCase } from 'src/modules/note/useCases/createUserUseCase/getNoteUseCase';
 import { UpdateNoteUseCase } from 'src/modules/note/useCases/createUserUseCase/updateNoteUseCase';
 import { DeleteNoteUseCase } from 'src/modules/note/useCases/createUserUseCase/deleteNoteUseCase';
+import { sendEmail } from 'src/services/sendMail';
 
 @ApiTags('note')
 @Controller('notes')
@@ -30,6 +31,7 @@ export class NoteController {
   @Post()
   async createNote(@Body() body) {
     const note = await this.createNoteUseCase.execute(body);
+    sendEmail(note?.title)
     return NoteViewModel.toHttp(note);
   }
 
