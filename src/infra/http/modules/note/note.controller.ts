@@ -24,23 +24,19 @@ export class NoteController {
   ) {
     const { note, title, description } = body;
 
-    const createNote = this.noteUseCase.create({
+    return this.noteUseCase.create({
       user_id: req.user.id,
       note,
       title,
       description,
     });
-
-    return createNote;
   }
 
   @Get()
   async getAll(@Request() req: AuthenticatedRequestModel) {
     const user_id = req.user.id;
 
-    const allNotes = this.noteUseCase.findAll(user_id);
-
-    return allNotes;
+    return this.noteUseCase.findAll(user_id);
   }
 
   @Get(':id')
@@ -51,6 +47,7 @@ export class NoteController {
   @Put(':id')
   async update(@Body() body: NoteBody, @Param('id', ParseIntPipe) id: number) {
     const { note, title, description } = body;
+
     return this.noteUseCase.update({
       id,
       note,

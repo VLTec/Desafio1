@@ -1,10 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { NoteRepository } from '../repository/noteRepository';
+import { Injectable } from '@nestjs/common';
 import {
   NoteBody,
   NoteUpdateBody,
 } from 'src/infra/http/modules/note/dtos/noteBody';
 import { NoteNotFoundException } from '../exceptions/NoteNotFound';
+import { NoteRepository } from '../repository/noteRepository';
 
 @Injectable()
 export class NoteUseCase {
