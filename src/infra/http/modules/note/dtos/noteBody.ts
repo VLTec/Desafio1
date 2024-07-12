@@ -4,3 +4,10 @@ export class NoteBody {
   description?: string;
   note: string;
 }
+
+export class NoteUpdateBody {
+  id: number;
+  title: string;
+  description?: string;
+  note: string;
+}

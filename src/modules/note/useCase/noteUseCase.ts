@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { NoteRepository } from '../repository/noteRepository';
-import { NoteBody } from 'src/infra/http/modules/note/dtos/noteBody';
+import {
+  NoteBody,
+  NoteUpdateBody,
+} from 'src/infra/http/modules/note/dtos/noteBody';
 import { NoteNotFoundException } from '../exceptions/NoteNotFound';
 
 @Injectable()
@@ -30,5 +33,20 @@ export class NoteUseCase {
     if (!note) throw new NoteNotFoundException();
 
     return note;
+  }
+
+  async update({ id, note, title, description }: NoteUpdateBody) {
+    const existNote = await this.noteRepository.findOne(id);
+
+    if (!existNote) throw new NoteNotFoundException();
+
+    const updateNote = await this.noteRepository.update({
+      id,
+      note,
+      title,
+      description,
+    });
+
+    return updateNote;
   }
 }

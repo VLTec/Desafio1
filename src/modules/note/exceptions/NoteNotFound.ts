@@ -4,7 +4,7 @@ import { AppException } from 'src/exceptions/appException';
 export class NoteNotFoundException extends AppException {
   constructor() {
     super({
-      message: 'Usuário não encontrado',
+      message: 'Anotação não encontrada',
       status: HttpStatus.NOT_FOUND,
     });
   }

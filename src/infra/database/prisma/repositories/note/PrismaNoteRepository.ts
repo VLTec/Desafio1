@@ -37,4 +37,19 @@ export class PrismaNoteRepository {
 
     return note;
   }
+
+  async update(notes: Note) {
+    const noteUpdate = await this.prisma.note.update({
+      where: {
+        id: notes.id,
+      },
+      data: {
+        note: notes.note,
+        title: notes.title,
+        description: notes.description,
+      },
+    });
+
+    return noteUpdate;
+  }
 }

@@ -9,7 +9,7 @@ import {
   Put,
   Request,
 } from '@nestjs/common';
-import { NoteBody } from './dtos/noteBody';
+import { NoteBody, NoteUpdateBody } from './dtos/noteBody';
 import { NoteUseCase } from 'src/modules/note/useCase/noteUseCase';
 import { AuthenticatedRequestModel } from '../auth/models/authenticatedRequestModel';
 
@@ -48,8 +48,16 @@ export class NoteController {
     return this.noteUseCase.findOne(id);
   }
 
-  //   @Put()
-  //   async update() {}
+  @Put()
+  async update(@Body() body: NoteUpdateBody) {
+    const { id, note, title, description } = body;
+    return this.noteUseCase.update({
+      id,
+      note,
+      title,
+      description,
+    });
+  }
 
   //   @Delete()
   //   async delete() {}
