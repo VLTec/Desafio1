@@ -52,4 +52,14 @@ export class PrismaNoteRepository {
 
     return noteUpdate;
   }
+
+  async delete(id: number) {
+    const deleteNote = await this.prisma.note.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return deleteNote;
+  }
 }

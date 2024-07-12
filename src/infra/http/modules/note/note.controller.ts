@@ -59,6 +59,8 @@ export class NoteController {
     });
   }
 
-  //   @Delete()
-  //   async delete() {}
+  @Delete(':id')
+  async delete(@Param('id', ParseIntPipe) id: number) {
+    return this.noteUseCase.delete(id);
+  }
 }

@@ -49,4 +49,12 @@ export class NoteUseCase {
 
     return updateNote;
   }
+
+  async delete(id: number) {
+    const existNote = await this.noteRepository.findOne(id);
+
+    if (!existNote) throw new NoteNotFoundException();
+
+    return this.noteRepository.delete(id);
+  }
 }
