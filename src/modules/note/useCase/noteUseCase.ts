@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { NoteUpdateBody } from 'src/infra/http/modules/note/dtos/noteBody';
 import { NoteNotFoundException } from '../exceptions/NoteNotFound';
 import { NoteRepository } from '../repository/noteRepository';
-import { MailService } from 'src/infra/http/modules/mail/mail.service';
+import { MailService } from 'src/service/mail.service';
 
 interface NoteProps {
   user_id: string;
