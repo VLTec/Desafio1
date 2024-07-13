@@ -47,4 +47,8 @@ export class Note {
   get createdAt(): Date {
     return this.props.createdAt;
   }
+
+  public toString = () : string => {
+    return `Nota [${this.id}} - ${this.title} | ${this.description}`;
+}
 }
