@@ -2,41 +2,27 @@ import { User } from '../../../../../modules/user/entities/User';
 import { User as UserRaw } from '@prisma/client';
 
 export class PrismaUserMapper {
-  static toPrisma({
-    createdAt,
-    email,
-    name,
-    password,
-    id,
-    updatedAt,
-  }: User): UserRaw {
+  static toPrisma(user: User): UserRaw {
     return {
-      updatedAt,
-      createdAt,
-      email,
-      name,
-      password,
-      id,
+      id: Number(user.id),
+      email: user.email,
+      name: user.name,
+      password: user.password,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     };
   }
 
-  static toDomain({
-    id,
-    createdAt,
-    email,
-    name,
-    password,
-    updatedAt,
-  }: UserRaw): User {
+  static toDomain(userRaw: UserRaw): User {
     return new User(
       {
-        updatedAt,
-        createdAt,
-        email,
-        name,
-        password,
+        email: userRaw.email,
+        name: userRaw.name,
+        password: userRaw.password,
+        createdAt: userRaw.createdAt,
+        updatedAt: userRaw.updatedAt,
       },
-      id,
+      userRaw.id.toString(),
     );
   }
 }
