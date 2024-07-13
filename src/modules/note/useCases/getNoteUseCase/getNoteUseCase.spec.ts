@@ -25,8 +25,8 @@ describe('Get Note', () => {
   });
 
   it('Get a new one that doesnt exist', async () => {
-    expect(await getNoteUseCase.execute({ idNote: 'Teste' })).rejects.toThrow(
-      NoteException,
+    expect(async () => await getNoteUseCase.execute({ idNote: 'Teste' })).rejects.toThrowError(
+      NoteException
     );
   });
 });

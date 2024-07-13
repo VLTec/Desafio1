@@ -24,11 +24,11 @@ describe('Delete Note', () => {
     expect(noteRepository.notes).toEqual([]);
   });
 
-  it('Delete a non-existent note', async () => {
+  it('Delete a non-existent note', () => {
     expect(
-      await deleteNoteUseCase.execute({
+      async () => await deleteNoteUseCase.execute({
         idNote: 'Invalid ID',
       }),
-    ).rejects.toThrow(NoteException);
+    ).rejects.toThrowError(NoteException);
   });
 });

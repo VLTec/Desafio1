@@ -3,16 +3,20 @@ import { NoteRepositoryInMemory } from '../../repositories/NoteRepositoryInMemor
 import { UserRepositoryInMemory } from 'src/modules/user/repositories/UserRepositoryInMemory';
 import { NoteException } from '../../exception/NoteException';
 import { makeUser } from 'src/modules/user/factories/userFactory';
+import { EmailService } from 'src/modules/email/EmailService';
+import { MailtrapEmailService } from 'src/modules/email/emailTrapEmailService';
 
 let createNoteUseCase: CreateNoteUseCase;
 let userRepository: UserRepositoryInMemory;
 let noteRepository: NoteRepositoryInMemory;
+let emailService: EmailService
 
 describe('Create Note', () => {
   beforeEach(() => {
     userRepository = new UserRepositoryInMemory();
     noteRepository = new NoteRepositoryInMemory();
-    createNoteUseCase = new CreateNoteUseCase(noteRepository, userRepository);
+    emailService = new MailtrapEmailService()
+    createNoteUseCase = new CreateNoteUseCase(noteRepository, userRepository, emailService);
 
     userRepository.create(
       makeUser({
@@ -38,21 +42,21 @@ describe('Create Note', () => {
 
   it('Create note with invalid title', async () => {
     expect(
-      await createNoteUseCase.execute({
+      async () => await createNoteUseCase.execute({
         title: '',
         description: 'Teste',
         userId: '58be049a-33f3-4920-aee5-e38655eceafc',
       }),
-    ).rejects.toThrow(NoteException);
+    ).rejects.toThrowError(NoteException);
   });
 
   it('Create note with invalid user id', async () => {
     expect(
-      await createNoteUseCase.execute({
+      async () => await createNoteUseCase.execute({
         title: 'Teste',
         description: 'Teste',
         userId: 'ID Inválido',
       }),
-    ).rejects.toThrow(NoteException);
+    ).rejects.toThrowError(NoteException);
   });
 });

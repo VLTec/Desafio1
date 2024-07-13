@@ -22,12 +22,14 @@ describe('Update Note', () => {
     noteRepository.notes = [note];
 
     const noteUpdated = makeNote({
-      ...note,
+      id: note.id,
+      createdAt: note.createdAt,
+      userId: note.userId,
       title: 'Teste 2',
       description: 'Teste 3',
     });
 
-    expect(await updateNoteUseCase.execute(noteUpdated)).toEqual(noteUpdated);
+    expect(await updateNoteUseCase.execute(noteUpdated)).toBe(noteUpdated);
   });
 
   it('Update a note that doesnt exist', async () => {
@@ -35,7 +37,7 @@ describe('Update Note', () => {
       id: 'Teste',
     });
 
-    expect(await updateNoteUseCase.execute(note)).rejects.toThrow(
+    expect(async () => await updateNoteUseCase.execute(note)).rejects.toThrowError(
       NoteException,
     );
   });
@@ -48,7 +50,7 @@ describe('Update Note', () => {
 
     noteRepository.notes = [note];
 
-    expect(await updateNoteUseCase.execute(note)).rejects.toThrow(
+    expect(async () => await updateNoteUseCase.execute(note)).rejects.toThrowError(
       NoteException,
     );
   });
