@@ -1,9 +1,7 @@
-import { User } from 'src/modules/user/entities/User';
 import { ValidateUserUseCase } from './validateUserUseCase';
 import { UserRepositoryInMemory } from 'src/modules/user/repositories/UserRepositoryInMemory';
 import { hash } from 'bcrypt';
 import { makeUser } from 'src/modules/user/factories/userFactory';
-import { UnauthorizedException } from '@nestjs/common';
 import { AuthValuesIncorrectException } from '../../exceptions/AuthValuesIncorrectException';
 
 let validateUserUseCase: ValidateUserUseCase;

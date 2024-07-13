@@ -11,15 +11,13 @@ describe('Get Alll Notes', () => {
     getAllNotesUseCase = new GetAllNotesUseCase(noteRepository);
   });
 
-    it('Get all notes from the database', async() => {
-        expect(noteRepository.notes).toEqual([])
+  it('Get all notes from the database', async () => {
+    expect(noteRepository.notes).toEqual([]);
 
-        const note = makeNote({});
+    const note = makeNote({});
 
-        noteRepository.notes = [note];
+    noteRepository.notes = [note];
 
-        expect(await getAllNotesUseCase.execute()).toEqual([note])
-    })
-
-
+    expect(await getAllNotesUseCase.execute()).toEqual([note]);
+  });
 });

@@ -1,8 +1,6 @@
 import { CreateNoteUseCase } from './createNoteUseCase';
-import { CreateUserUseCase } from 'src/modules/user/useCases/createUserUseCase/createUserUseCase';
 import { NoteRepositoryInMemory } from '../../repositories/NoteRepositoryInMemory';
 import { UserRepositoryInMemory } from 'src/modules/user/repositories/UserRepositoryInMemory';
-import { User } from 'src/modules/user/entities/User';
 import { NoteException } from '../../exception/NoteException';
 import { makeUser } from 'src/modules/user/factories/userFactory';
 
@@ -17,14 +15,12 @@ describe('Create Note', () => {
     createNoteUseCase = new CreateNoteUseCase(noteRepository, userRepository);
 
     userRepository.create(
-      makeUser(
-        {
-          id: '58be049a-33f3-4920-aee5-e38655eceafc',
-          email: 'email@email.com',
-          name: 'Vitor',
-          password: '123123',
-        }
-      ),
+      makeUser({
+        id: '58be049a-33f3-4920-aee5-e38655eceafc',
+        email: 'email@email.com',
+        name: 'Vitor',
+        password: '123123',
+      }),
     );
   });
 
@@ -59,6 +55,4 @@ describe('Create Note', () => {
       }),
     ).rejects.toThrow(NoteException);
   });
-
-
 });

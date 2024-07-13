@@ -14,19 +14,18 @@ interface CreateNoteRequest {
 export class CreateNoteUseCase {
   constructor(
     private noteRepository: INoteRepository,
-    private userRepository: UserRepository
+    private userRepository: UserRepository,
   ) {}
 
   async execute({ title, description, userId }: CreateNoteRequest) {
+    if (title.trim() == '') {
+      throw new NoteException('A Nota precisa de um título');
+    }
 
-    if (title.trim() == "") {
-       throw new NoteException("A Nota precisa de um título")
-    } 
-
-    const user = this.userRepository.findById(userId)
+    const user = this.userRepository.findById(userId);
 
     if (!user) {
-       throw new NoteException("ID de usuário inválido")
+      throw new NoteException('ID de usuário inválido');
     }
 
     const note = makeNote({

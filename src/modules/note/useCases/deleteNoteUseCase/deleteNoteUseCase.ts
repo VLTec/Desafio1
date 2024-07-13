@@ -10,11 +10,11 @@ interface IDeleteNoteRequest {
 export class DeleteNoteUseCase {
   constructor(private noteRepository: INoteRepository) {}
 
-  async execute({ idNote }: IDeleteNoteRequest ) {
-    const note = await this.noteRepository.findById(idNote)
-    
+  async execute({ idNote }: IDeleteNoteRequest) {
+    const note = await this.noteRepository.findById(idNote);
+
     if (!note) {
-       throw new NoteException("Nota não foi encontrada")
+      throw new NoteException('Nota não foi encontrada');
     }
 
     await this.noteRepository.delete(idNote);

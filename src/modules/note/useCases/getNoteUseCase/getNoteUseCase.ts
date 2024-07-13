@@ -14,7 +14,7 @@ export class GetNoteUseCase {
     const note = await this.noteRepository.findById(idNote);
 
     if (!note) {
-      throw new NoteException("Nota não foi encontrada");
+      throw new NoteException('Nota não foi encontrada');
     }
 
     return note;

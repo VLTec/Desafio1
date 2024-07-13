@@ -2,7 +2,6 @@ import { Note } from '../entities/Note';
 import { INoteRepository } from './NoteRepository';
 
 export class NoteRepositoryInMemory implements INoteRepository {
- 
   public notes: Note[] = [];
 
   public async create(note: Note): Promise<void> {
@@ -26,9 +25,9 @@ export class NoteRepositoryInMemory implements INoteRepository {
   }
 
   public async getNotesByUser(userId: string): Promise<Note[]> {
-     const notes = this.notes.filter(note => note.userId === userId)
+    const notes = this.notes.filter((note) => note.userId === userId);
 
-     return notes
+    return notes;
   }
 
   public async findAll(): Promise<Note[]> {
