@@ -6,6 +6,7 @@ import { GetNoteUseCase } from "src/modules/note/useCases/getNoteUseCase/getNote
 import { GetAllNotesUseCase } from "src/modules/note/useCases/getAllNotesUseCase/getAllNotesUseCase";
 import { DeleteNoteUseCase } from "src/modules/note/useCases/deleteNoteUseCase/deleteNoteUseCase";
 import { DatabaseModule } from "src/infra/database/database.module";
+import { MailerServices } from "../../../services/mailer.service";
 
 @Module({
     imports: [DatabaseModule],
@@ -15,7 +16,8 @@ import { DatabaseModule } from "src/infra/database/database.module";
         UpdateNoteUseCase,
         GetNoteUseCase,
         GetAllNotesUseCase,
-        DeleteNoteUseCase
+        DeleteNoteUseCase,
+        MailerServices
     ]
 })
 
