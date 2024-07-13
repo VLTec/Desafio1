@@ -35,7 +35,7 @@ export class NotesService {
     });
 
     await this.mailerService.sendMail({
-      to: 'tierryhahn@gmail.com',
+      to: 'email@example.com',
       subject: 'Nota Criada',
       template: './note-created',
       context: {
