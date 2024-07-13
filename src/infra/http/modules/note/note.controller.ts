@@ -11,6 +11,8 @@ import { NoteViewModel } from "./viewModel/noteViewModel";
 import { ApiTags } from "@nestjs/swagger";
 import { Public } from "../auth/decorators/isPublic";
 import { GetAllNotesUseCase } from "src/modules/note/useCases/getAllNotesUseCase/getAllNotesUseCase";
+import { MailerServices } from "../../../services/mailer.service"; 
+import { UserRepository } from "src/modules/user/repositories/UserRepository";
 
 @ApiTags('note')
 @Controller('notes')
@@ -20,19 +22,27 @@ export class NoteController {
         private updateNoteUseCase: UpdateNoteUseCase,
         private getNoteUseCase: GetNoteUseCase,
         private getAllNotesUseCase: GetAllNotesUseCase,
-        private deleteNoteUseCase: DeleteNoteUseCase
+        private deleteNoteUseCase: DeleteNoteUseCase,
+        private mailerService: MailerServices,
+        private user: UserRepository
     ) {}
 
     @Public()
     @Post()
     async createNote(@Body() body: CreateNoteBody) {
-        const { title, description, userId }  = body;
+        const { title, description, userId } = body;
 
         const note = await this.createNoteUseCase.execute({
             title,
             description,
             userId
         })
+
+        const user = await this.user.findById(userId);
+
+        if (user) {
+            await this.mailerService.sendMail(user)
+        }
 
         return NoteViewModel.toHttp(note);
     }
