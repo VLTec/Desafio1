@@ -20,7 +20,7 @@ export class PrismaNoteMapper {
         };
     }
 
-    static  toDomain({
+    static toDomain({
         createdAt,
         id,
         title,
