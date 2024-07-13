@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put , Delete, Param } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Delete, Param } from "@nestjs/common";
 import { CreateNoteUseCase } from "src/modules/note/useCases/createNoteUseCase/createNoteUseCase";
 import { UpdateNoteUseCase } from "src/modules/note/useCases/updateNoteUseCase/updateNoteUseCase";
 import { GetNoteUseCase } from "src/modules/note/useCases/getNoteUseCase/getNoteUseCase";
@@ -6,8 +6,6 @@ import { DeleteNoteUseCase } from "src/modules/note/useCases/deleteNoteUseCase/d
 
 import { CreateNoteBody } from "./dtos/createNoteBody";
 import { UpdateNoteBody } from "./dtos/updateNoteBody";
-import { GetNoteBody } from "./dtos/getNoteBody";
-import { DeleteNoteBody } from "./dtos/deleteNoteBody";
 import { NoteViewModel } from "./viewModel/noteViewModel";
 
 import { ApiTags } from "@nestjs/swagger";
@@ -43,7 +41,7 @@ export class NoteController {
     @Put('/:id')
     async updateNote(@Param('id') id: string, @Body() body: UpdateNoteBody) {
         const { title, description, userId } = body;
-
+        
         const note = await this.updateNoteUseCase.execute({
             id,
             title,
@@ -51,14 +49,12 @@ export class NoteController {
             userId
         })
 
-        return NoteViewModel.toHttp(note);
+        if (note) return NoteViewModel.toHttp(note);
     }
 
     @Public()
     @Get('/:id')
-    async getNote(@Param('id') params: GetNoteBody) {
-        const { id } = params;
-
+    async getNote(@Param('id') id: string) {
         const note = await this.getNoteUseCase.execute({
             id
         })
@@ -75,9 +71,7 @@ export class NoteController {
 
     @Public()
     @Delete('/:id')
-    async deleteNote(@Param('id') params: DeleteNoteBody) {
-        const { id } = params;
-
+    async deleteNote(@Param('id') id: string) {
         await this.deleteNoteUseCase.execute({
             id
         })
