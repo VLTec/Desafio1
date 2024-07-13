@@ -8,7 +8,6 @@ export class CreateNoteBody {
     @ApiProperty()
     title: string;
 
-    @IsStringCustom()
     @ApiProperty()
     description?: string;
 
