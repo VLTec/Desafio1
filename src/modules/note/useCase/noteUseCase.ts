@@ -2,9 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { NoteUpdateBody } from 'src/infra/http/modules/note/dtos/noteBody';
 import { NoteNotFoundException } from '../exceptions/NoteNotFound';
 import { NoteRepository } from '../repository/noteRepository';
+import { MailService } from 'src/infra/http/modules/mail/mail.service';
 
 interface NoteProps {
   user_id: string;
+  user_email: string;
   title: string;
   description?: string;
   note: string;
@@ -12,15 +14,20 @@ interface NoteProps {
 
 @Injectable()
 export class NoteUseCase {
-  constructor(private noteRepository: NoteRepository) {}
+  constructor(
+    private noteRepository: NoteRepository,
+    private mailService: MailService,
+  ) {}
 
-  async create({ note, title, description, user_id }: NoteProps) {
+  async create({ note, title, description, user_id, user_email }: NoteProps) {
     const createNote = await this.noteRepository.create({
       user_id,
       note,
       title,
       description,
     });
+
+    await this.mailService.sendEmail(user_email);
 
     return createNote;
   }

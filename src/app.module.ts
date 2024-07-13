@@ -1,15 +1,29 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './infra/http/modules/user/user.module';
+import { APP_GUARD } from '@nestjs/core';
 import { DatabaseModule } from './infra/database/database.module';
 import { AuthModule } from './infra/http/modules/auth/auth.module';
-import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './infra/http/modules/auth/guards/jwtAuth.guard';
 import { NoteModule } from './infra/http/modules/note/note.module';
-
+import { UserModule } from './infra/http/modules/user/user.module';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { env } from './env';
 @Module({
-  imports: [DatabaseModule, UserModule, AuthModule, NoteModule],
+  imports: [
+    DatabaseModule,
+    UserModule,
+    AuthModule,
+    NoteModule,
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: 'mgilsonputasso@gmail.com',
+          pass: 'hpnv xlxb arut ngev ',
+        },
+      },
+    }),
+  ],
   controllers: [],
   providers: [
     {

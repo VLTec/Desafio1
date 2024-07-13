@@ -28,6 +28,7 @@ export class NoteController {
 
     return this.noteUseCase.create({
       user_id: req.user.id,
+      user_email: req.user.email,
       note,
       title,
       description,
