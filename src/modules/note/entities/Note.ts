@@ -1,7 +1,6 @@
 import { randomUUID } from 'crypto';
-import { Replace } from 'src/types/replace';
 
-interface NoteSchema {
+export interface NoteSchema {
   title: string;
   content: string;
   createdAt: Date;
@@ -13,15 +12,15 @@ export class Note {
   private _id: string;
 
   constructor(
-    props: Replace<NoteSchema, { createdAt?: Date; updatedAt?: Date }>,
-    id?: string,
+    props: Omit<NoteSchema, 'createdAt' | 'updatedAt'>,
+    id: string = randomUUID()
   ) {
     this.props = {
       ...props,
-      createdAt: props.createdAt || new Date(),
-      updatedAt: props.updatedAt || new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
-    this._id = id || randomUUID();
+    this._id = id;
   }
 
   get id(): string {

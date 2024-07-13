@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { NoteRepository } from '../../repositories/NoteRepository';
 import { Note } from '../../entities/Note';
-// import { MailerService } from '@nestjs-modules/mailer';
+import { sendEmail } from 'src/services/sendMail';
 
 interface CreateNoteRequest {
   title: string;
@@ -10,24 +10,17 @@ interface CreateNoteRequest {
 
 @Injectable()
 export class CreateNoteUseCase {
-  constructor(
-    private noteRepository: NoteRepository,
-    // private mailerService: MailerService,
-  ) {}
+  constructor(private noteRepository: NoteRepository) {}
 
   async execute({ title, content }: CreateNoteRequest) {
     const note = new Note({
       title,
       content,
-    });
+          });
 
     await this.noteRepository.create(note);
 
-    // await this.mailerService.sendMail({
-    //   to: 'brunotorresreal@gmail.com',
-    //   subject: 'Nota criada',
-    //   text: 'Nota criada',
-    // });
+    sendEmail(note.title); 
 
     return note;
   }

@@ -27,10 +27,8 @@ export class PrismaNoteMapper {
   }: NoteRaw): Note {
     return new Note(
       {
-        createdAt,
         title,
         content,
-        updatedAt,
       },
       id,
     );

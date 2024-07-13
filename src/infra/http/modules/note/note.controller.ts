@@ -16,7 +16,6 @@ import { GetNotesUseCase } from 'src/modules/note/useCases/createUserUseCase/get
 import { GetNoteUseCase } from 'src/modules/note/useCases/createUserUseCase/getNoteUseCase';
 import { UpdateNoteUseCase } from 'src/modules/note/useCases/createUserUseCase/updateNoteUseCase';
 import { DeleteNoteUseCase } from 'src/modules/note/useCases/createUserUseCase/deleteNoteUseCase';
-import { sendEmail } from 'src/services/sendMail';
 import { CreateNoteDto, UpdateNoteDto } from './dtos/note.dto';
 
 @ApiTags('note')
@@ -34,7 +33,6 @@ export class NoteController {
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async createNote(@Body() createNoteDto: CreateNoteDto) {
     const note = await this.createNoteUseCase.execute(createNoteDto);
-    sendEmail(note?.title);
     return NoteViewModel.toHttp(note);
   }
 
