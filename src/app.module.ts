@@ -9,7 +9,17 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { env } from './env';
 import { NoteModule } from './infra/http/modules/note/note.module';
 @Module({
-  imports: [DatabaseModule, UserModule, NoteModule, AuthModule],
+  imports: [DatabaseModule, UserModule, NoteModule, AuthModule, 
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.MAILER_HOST,
+        auth: {
+          user: process.env.MAILER_USER,
+          pass: process.env.MAILER_PASS
+        }
+      }
+    }),
+  ],
   controllers: [],
   providers: [
     {
