@@ -33,11 +33,11 @@ export class Note {
         return this.props.userId;
     }
 
-    get updateAt(): Date {
+    get updatedAt(): Date {
         return this.props.updatedAt;
     }
 
-    set updateAt(updatedAt: Date) {
+    set updatedAt(updatedAt: Date) {
         this.props.updatedAt = updatedAt;
     }
 
