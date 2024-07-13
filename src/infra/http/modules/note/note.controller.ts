@@ -43,12 +43,12 @@ export class NoteController {
   }
 
   @Get(':id')
-  async getOne(@Param('id', ParseIntPipe) id: number) {
+  async getOne(@Param('id') id: string) {
     return this.noteUseCase.findOne(id);
   }
 
   @Put(':id')
-  async update(@Body() body: NoteBody, @Param('id', ParseIntPipe) id: number) {
+  async update(@Body() body: NoteBody, @Param('id') id: string) {
     const { note, title, description } = body;
 
     return this.noteUseCase.update({
@@ -60,7 +60,7 @@ export class NoteController {
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number) {
+  async delete(@Param('id') id: string) {
     return this.noteUseCase.delete(id);
   }
 }

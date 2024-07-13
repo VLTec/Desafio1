@@ -1,21 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { Note } from 'src/modules/note/entities/Note';
+import { PrismaNotesMapper } from '../../mappers/notes/PrismaNotesMapper';
 import { PrismaService } from '../../prisma.service';
 
 @Injectable()
 export class PrismaNoteRepository {
   constructor(private prisma: PrismaService) {}
   async create(notes: Note) {
-    const newNote = await this.prisma.note.create({
-      data: {
-        user_id: notes.user_id,
-        note: notes.note,
-        title: notes.title,
-        description: notes.description,
-      },
+    const noteRaw = PrismaNotesMapper.toCreate(notes);
+
+    const createNote = await this.prisma.note.create({
+      data: noteRaw,
     });
 
-    return newNote;
+    return createNote;
   }
 
   async findAll(user_id: string) {
@@ -28,7 +26,7 @@ export class PrismaNoteRepository {
     return allNotes;
   }
 
-  async findOne(id: number) {
+  async findById(id: string) {
     const note = await this.prisma.note.findUnique({
       where: {
         id: id,
@@ -53,7 +51,7 @@ export class PrismaNoteRepository {
     return noteUpdate;
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     const deleteNote = await this.prisma.note.delete({
       where: {
         id: id,

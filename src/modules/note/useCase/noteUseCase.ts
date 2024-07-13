@@ -3,6 +3,7 @@ import { NoteUpdateBody } from 'src/infra/http/modules/note/dtos/noteBody';
 import { NoteNotFoundException } from '../exceptions/NoteNotFound';
 import { NoteRepository } from '../repository/noteRepository';
 import { MailService } from 'src/service/mail.service';
+import { Note } from '../entities/Note';
 
 interface NoteProps {
   user_id: string;
@@ -20,14 +21,15 @@ export class NoteUseCase {
   ) {}
 
   async create({ note, title, description, user_id, user_email }: NoteProps) {
-    const createNote = await this.noteRepository.create({
-      user_id,
+    const notes = new Note({
+      description,
       note,
       title,
-      description,
+      user_id,
     });
+    const createNote = await this.noteRepository.create(notes);
 
-    await this.mailService.sendEmail(user_email);
+    // await this.mailService.sendEmail(user_email);
 
     return createNote;
   }
@@ -38,8 +40,8 @@ export class NoteUseCase {
     return allNotes;
   }
 
-  async findOne(id: number) {
-    const note = await this.noteRepository.findOne(id);
+  async findOne(id: string) {
+    const note = await this.noteRepository.findById(id);
 
     if (!note) throw new NoteNotFoundException();
 
@@ -47,7 +49,7 @@ export class NoteUseCase {
   }
 
   async update({ id, note, title, description }: NoteUpdateBody) {
-    const existNote = await this.noteRepository.findOne(id);
+    const existNote = await this.noteRepository.findById(id);
 
     if (!existNote) throw new NoteNotFoundException();
 
@@ -61,8 +63,8 @@ export class NoteUseCase {
     return updateNote;
   }
 
-  async delete(id: number) {
-    const existNote = await this.noteRepository.findOne(id);
+  async delete(id: string) {
+    const existNote = await this.noteRepository.findById(id);
 
     if (!existNote) throw new NoteNotFoundException();
 

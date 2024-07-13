@@ -12,7 +12,7 @@ export class NoteBody {
 }
 
 export class NoteUpdateBody {
-  id: number;
+  id: string;
   title: string;
   description?: string;
   note: string;
