@@ -29,14 +29,10 @@ export class UpdateNoteUseCase {
             note.description = description;
         }
 
-        const updateNote = new Note({
-            title: title || "",
-            description: description || "",
-            userId: userId
-        })
+        await this.noteRepository.update(note);
 
-        await this.noteRepository.update(updateNote);
+        const updatedNote = await this.noteRepository.findById(id);
 
-        return updateNote;
+        return updatedNote;
     }
 }
