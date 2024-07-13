@@ -41,7 +41,7 @@ export class PrismaNoteRepository implements NoteRepository {
     }
 
     async findAll(): Promise<Note[] | null> {
-        const notes = await this.prisma.note.findMany();
+        const notes = await this.prisma.note.findMany({ orderBy: { updatedAt: 'asc' } });
 
         if (!notes) return null
 
