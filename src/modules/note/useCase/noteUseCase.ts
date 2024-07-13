@@ -1,13 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { NoteUpdateBody } from 'src/infra/http/modules/note/dtos/noteBody';
-import { NoteNotFoundException } from '../exceptions/NoteNotFound';
-import { NoteRepository } from '../repository/noteRepository';
 import { MailService } from 'src/service/mail.service';
 import { Note } from '../entities/Note';
+import { NoteNotFoundException } from '../exceptions/NoteNotFound';
+import { NoteRepository } from '../repository/noteRepository';
 
 interface NoteProps {
   user_id: string;
   user_email: string;
+  title: string;
+  description?: string;
+  note: string;
+}
+
+interface NoteUpdateProps {
+  id: string;
+  user_id: string;
   title: string;
   description?: string;
   note: string;
@@ -27,9 +34,9 @@ export class NoteUseCase {
       title,
       user_id,
     });
-    const createNote = await this.noteRepository.create(notes);
+    const createNote = await this.noteRepository.upsert(notes);
 
-    // await this.mailService.sendEmail(user_email);
+    await this.mailService.sendEmail(user_email);
 
     return createNote;
   }
@@ -48,12 +55,13 @@ export class NoteUseCase {
     return note;
   }
 
-  async update({ id, note, title, description }: NoteUpdateBody) {
+  async update({ id, note, title, description, user_id }: NoteUpdateProps) {
     const existNote = await this.noteRepository.findById(id);
 
     if (!existNote) throw new NoteNotFoundException();
 
-    const updateNote = await this.noteRepository.update({
+    const updateNote = await this.noteRepository.upsert({
+      user_id,
       id,
       note,
       title,

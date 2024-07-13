@@ -48,10 +48,16 @@ export class NoteController {
   }
 
   @Put(':id')
-  async update(@Body() body: NoteBody, @Param('id') id: string) {
+  async update(
+    @Body() body: NoteBody,
+    @Param('id') id: string,
+    @Request() req: AuthenticatedRequestModel,
+  ) {
     const { note, title, description } = body;
+    const user_id = req.user.id;
 
     return this.noteUseCase.update({
+      user_id,
       id,
       note,
       title,

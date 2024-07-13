@@ -6,11 +6,25 @@ import { PrismaService } from '../../prisma.service';
 @Injectable()
 export class PrismaNoteRepository {
   constructor(private prisma: PrismaService) {}
-  async create(notes: Note) {
+  async upsert(notes: Note) {
     const noteRaw = PrismaNotesMapper.toCreate(notes);
 
-    const createNote = await this.prisma.note.create({
-      data: noteRaw,
+    const createNote = await this.prisma.note.upsert({
+      where: {
+        id: noteRaw.id,
+      },
+      update: {
+        title: noteRaw.title,
+        description: noteRaw.description,
+        note: noteRaw.note,
+      },
+      create: {
+        id: noteRaw.id,
+        user_id: noteRaw.user_id,
+        title: noteRaw.title,
+        note: noteRaw.note,
+        description: noteRaw.description,
+      },
     });
 
     return createNote;
@@ -34,21 +48,6 @@ export class PrismaNoteRepository {
     });
 
     return note;
-  }
-
-  async update(notes: Note) {
-    const noteUpdate = await this.prisma.note.update({
-      where: {
-        id: notes.id,
-      },
-      data: {
-        note: notes.note,
-        title: notes.title,
-        description: notes.description,
-      },
-    });
-
-    return noteUpdate;
   }
 
   async delete(id: string) {
