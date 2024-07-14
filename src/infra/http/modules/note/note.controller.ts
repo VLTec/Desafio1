@@ -11,7 +11,7 @@ import { NoteViewModel } from "./viewModel/noteViewModel";
 import { ApiTags } from "@nestjs/swagger";
 import { Public } from "../auth/decorators/isPublic";
 import { GetAllNotesUseCase } from "src/modules/note/useCases/getAllNotesUseCase/getAllNotesUseCase";
-import { MailerServices } from "../../../services/mailer.service"; 
+import { MailerServices } from "../../../services/mailer/mailer.service"; 
 import { UserRepository } from "src/modules/user/repositories/UserRepository";
 
 @ApiTags('note')
