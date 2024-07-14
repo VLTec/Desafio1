@@ -7,8 +7,9 @@ import { JwtAuthGuard } from './infra/http/modules/auth/guards/jwtAuth.guard';
 
 import { MailerModule } from '@nestjs-modules/mailer';
 import { env } from './env';
+import { NotesModule } from './modules/notes/notes.module';
 @Module({
-  imports: [DatabaseModule, UserModule, AuthModule],
+  imports: [DatabaseModule, UserModule, AuthModule, NotesModule],
   controllers: [],
   providers: [
     {
