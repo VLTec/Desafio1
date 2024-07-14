@@ -19,14 +19,14 @@ export class MailtrapEmailService implements EmailService {
 
   async sendEmail({ to, subject, text }: EmailStructure): Promise<void> {
     const mailOptions = {
-      from: '',
+      from: 'teste@gmail.com',
       to,
       subject,
       text,
     };
 
     try {
-      //await this.transporter.sendMail(mailOptions);
+      await this.transporter.sendMail(mailOptions);
     } catch (error) {
       throw new EmailServiceException((error as Error).message);
     }
