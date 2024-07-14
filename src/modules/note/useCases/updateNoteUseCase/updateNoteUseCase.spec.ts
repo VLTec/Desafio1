@@ -29,7 +29,9 @@ describe('Update Note', () => {
       description: 'Teste 3',
     });
 
-    expect(await updateNoteUseCase.execute(noteUpdated)).toBe(noteUpdated);
+    expect(await updateNoteUseCase.execute(noteUpdated)).toEqual(
+      noteUpdated,
+    );
   });
 
   it('Update a note that doesnt exist', async () => {
@@ -37,9 +39,9 @@ describe('Update Note', () => {
       id: 'Teste',
     });
 
-    expect(async () => await updateNoteUseCase.execute(note)).rejects.toThrowError(
-      NoteException,
-    );
+    expect(
+      async () => await updateNoteUseCase.execute(note),
+    ).rejects.toThrowError(NoteException);
   });
 
   it('Update a note that does not have a valid title', async () => {
@@ -50,8 +52,8 @@ describe('Update Note', () => {
 
     noteRepository.notes = [note];
 
-    expect(async () => await updateNoteUseCase.execute(note)).rejects.toThrowError(
-      NoteException,
-    );
+    expect(
+      async () => await updateNoteUseCase.execute(note),
+    ).rejects.toThrowError(NoteException);
   });
 });
