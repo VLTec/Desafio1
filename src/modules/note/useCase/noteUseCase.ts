@@ -55,7 +55,13 @@ export class NoteUseCase {
     return note;
   }
 
-  async update({ id, note, title, description, user_id }: NoteUpdateProps) {
+  async update({
+    id,
+    note,
+    title,
+    description,
+    user_id,
+  }: NoteUpdateProps): Promise<Note | undefined> {
     const existNote = await this.noteRepository.findById(id);
 
     if (!existNote) throw new NoteNotFoundException();
