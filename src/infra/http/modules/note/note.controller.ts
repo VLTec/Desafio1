@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { createNoteBody } from './dtos/createNoteBody';
-import { CreateNoteUseCase } from 'src/modules/note/useCases/createUserUseCase/createNoteUseCase';
+import { CreateNoteUseCase } from 'src/modules/note/useCases/createNoteUseCase/createNoteUseCase';
 import { NoteViewModel } from './viewModel/noteViewModel';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthenticatedRequestModel } from '../auth/models/authenticatedRequestModel';
