@@ -21,7 +21,7 @@ import { SignUpUseCase } from 'src/modules/auth/useCases/signUpUseCase/signUpUse
     }),
   ],
   controllers: [AuthController],
-  providers: [
+  providers: [ 
     LocalStrategy,
     JwtStrategy,
     ValidateUserUseCase,

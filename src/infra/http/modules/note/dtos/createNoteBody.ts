@@ -4,15 +4,13 @@ import { IsStringCustom } from 'src/infra/http/classValidator/decorators/IsStrin
 import { MinLengthCustom } from 'src/infra/http/classValidator/decorators/MinLengthCustom';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class SignInBody {
-  @IsNotEmptyCustom()
+export class CreateNoteBody {
   @IsStringCustom()
-  @IsEmailCustom()
+  @IsNotEmptyCustom()
   @ApiProperty()
-  email: string;
+  title: string;
 
   @IsStringCustom()
-  @MinLengthCustom(6)
   @ApiProperty()
-  password: string;
+  description: string;
 }

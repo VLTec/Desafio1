@@ -20,7 +20,7 @@ export class CreateUserUseCase {
     if (userAlreadyExist) throw new UserWithSameEmailException();
 
     const user = new User({
-      email,
+      email, 
       name,
       password: await hash(password, 10),
     });

@@ -1,11 +1,12 @@
-import { User } from '../../../../../modules/user/entities/User';
+import { User } from "src/modules/user/entities/User";
+
 export class UserViewModel {
-  static toHttp({ createdAt, email, id, name }: User) {
+  static toHttp(user: User) {
     return {
-      id,
-      email,
-      name,
-      createdAt,
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      createdAt: user.createdAt,
     };
   }
 }
