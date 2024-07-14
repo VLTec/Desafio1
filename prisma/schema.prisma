@@ -1,5 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// schema.prisma
 
 generator client {
   provider = "prisma-client-js"
@@ -17,4 +16,15 @@ model User {
   password  String
   createdAt DateTime
   updatedAt DateTime @updatedAt
+  // Adicione o campo de relação oposto para 'user'
+  notes     Note[]
+}
+
+model Note {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  userId      String // Chave estrangeira referente ao User
+  user        User     @relation(fields: [userId], references: [id])
 }
