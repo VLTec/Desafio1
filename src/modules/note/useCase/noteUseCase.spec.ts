@@ -1,8 +1,32 @@
 import { MailService } from 'src/service/mail.service';
+import { NoteNotFoundException } from '../exceptions/NoteNotFound';
+import { makeNote } from '../factories/notesFactories';
 import { NoteRepositoryInMemory } from '../repository/NoteRepositoryInMemory';
 import { NoteUseCase } from './noteUseCase';
 import { MailerService } from '@nestjs-modules/mailer';
-import { makeNote } from '../factories/notesFactories';
+import * as Mail from 'nodemailer/lib/mailer';
+
+jest.mock('@nestjs-modules/mailer', () => {
+  return {
+    MailerService: jest.fn().mockImplementation(() => {
+      return {
+        sendMail: jest.fn(),
+      };
+    }),
+  };
+});
+
+jest.mock('src/service/mail.service', () => {
+  const originalModule = jest.requireActual('src/service/mail.service');
+  return {
+    ...originalModule,
+    MailService: jest.fn().mockImplementation(() => {
+      return {
+        sendEmail: jest.fn(),
+      };
+    }),
+  };
+});
 
 let notesUseCase: NoteUseCase;
 let notesRepository: NoteRepositoryInMemory;
@@ -12,6 +36,11 @@ let mailerService: MailerService;
 describe('Notes', () => {
   beforeEach(() => {
     notesRepository = new NoteRepositoryInMemory();
+    const mockMailerOptions = {};
+    const mockTransportFactory = {
+      createTransport: jest.fn().mockReturnValue({} as Mail),
+    };
+    mailerService = new MailerService(mockMailerOptions, mockTransportFactory);
     mailService = new MailService(mailerService);
     notesUseCase = new NoteUseCase(notesRepository, mailService);
   });
@@ -26,7 +55,7 @@ describe('Notes', () => {
       user_id: 'userId',
     });
 
-    expect(notesRepository.notes).toHaveLength(1);
+    await expect(notesRepository.notes).toHaveLength(1);
   });
 
   it('get all notes', async () => {
@@ -51,6 +80,15 @@ describe('Notes', () => {
     expect(getnote).toEqual(note2);
   });
 
+  it('should not found note', async () => {
+    const note1 = makeNote({ id: 'id1' });
+    notesRepository.notes.push(note1);
+
+    expect(async () => await notesUseCase.findOne('id2')).rejects.toThrowError(
+      NoteNotFoundException,
+    );
+  });
+
   it('update note', async () => {
     const note = makeNote({ id: 'id1' });
 
@@ -73,5 +111,15 @@ describe('Notes', () => {
         expect(noteUpdate).toEqual(newNote);
       }
     }
+  });
+
+  it('delete note', async () => {
+    const note = makeNote({ id: 'id1' });
+
+    notesRepository.notes.push(note);
+
+    const deletedNote = await notesUseCase.delete(note.id);
+
+    expect(deletedNote).toBeNull();
   });
 });

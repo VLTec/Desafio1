@@ -19,9 +19,7 @@ export class NoteRepositoryInMemory implements NoteRepository {
   async findById(id: string): Promise<Note | null> {
     const note = this.notes.find((note) => note.id === id);
 
-    if (!note) return null;
-
-    return note;
+    return note || null;
   }
 
   async findAll(user_id: string): Promise<Note[]> {
@@ -30,7 +28,9 @@ export class NoteRepositoryInMemory implements NoteRepository {
     return notes;
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<null> {
     this.notes = this.notes.filter((note) => note.id !== id);
+
+    return null;
   }
 }
