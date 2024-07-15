@@ -19,6 +19,7 @@ import { FindByIdNoteUseCase } from 'src/modules/note/useCases/findByIdNoteUseCa
 import { UpdateNoteUseCase } from 'src/modules/note/useCases/updateNoteUseCase/updateNoteUseCase';
 import { updateNoteBody } from './dtos/updateNoteBody';
 import { DeleteNoteUseCase } from 'src/modules/note/useCases/deleteNoteUseCase/deleteNoteUseCase';
+import { MailService } from 'src/infra/mail/mail.service';
 
 @ApiTags('note')
 @Controller('notes')
@@ -29,6 +30,7 @@ export class NoteController {
     private findByIdNoteUseCase: FindByIdNoteUseCase,
     private updateNoteUseCase: UpdateNoteUseCase,
     private deleteNoteUseCase: DeleteNoteUseCase,
+    private mailService: MailService,
   ) {}
 
   @Post()
@@ -36,13 +38,18 @@ export class NoteController {
     @Body() body: createNoteBody,
     @Request() request: AuthenticatedRequestModel,
   ) {
-    const { id } = request.user;
+    const { id, name, email } = request.user;
     const { title, description } = body;
 
     const note = await this.createNoteUseCase.execute({
       title,
       description,
       userId: id,
+    });
+
+    this.mailService.sendMail({
+      name,
+      email,
     });
 
     return NoteViewModel.toHttp(note);

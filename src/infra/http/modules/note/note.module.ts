@@ -6,9 +6,10 @@ import { FindAllNotesUseCase } from 'src/modules/note/useCases/findAllNotesUseCa
 import { FindByIdNoteUseCase } from 'src/modules/note/useCases/findByIdNoteUseCase/findByIdNoteUseCase';
 import { UpdateNoteUseCase } from 'src/modules/note/useCases/updateNoteUseCase/updateNoteUseCase';
 import { DeleteNoteUseCase } from 'src/modules/note/useCases/deleteNoteUseCase/deleteNoteUseCase';
+import { MailModule } from 'src/infra/mail/mail.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, MailModule],
   controllers: [NoteController],
   providers: [
     CreateNoteUseCase,
