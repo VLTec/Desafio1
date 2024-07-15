@@ -5,16 +5,26 @@ import { AuthModule } from './infra/http/modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './infra/http/modules/auth/guards/jwtAuth.guard';
 
-import { MailerModule } from '@nestjs-modules/mailer';
 import { env } from './env';
+
+import { ConfigModule } from '@nestjs/config'
+
 @Module({
-  imports: [DatabaseModule, UserModule, AuthModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: env.NODE_ENV === 'development' ? '.env.development' : '.env'
+    }),
+    DatabaseModule,
+    UserModule,
+    AuthModule,
+  ],
   controllers: [],
   providers: [
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    },
+    }
   ],
 })
 export class AppModule {}
