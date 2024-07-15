@@ -5,6 +5,7 @@ import { CreateNoteUseCase } from 'src/modules/note/useCases/createNoteUseCase/c
 import { FindAllNotesUseCase } from 'src/modules/note/useCases/findAllNotesUseCase/findAllNotesUseCase';
 import { FindByIdNoteUseCase } from 'src/modules/note/useCases/findByIdNoteUseCase/findByIdNoteUseCase';
 import { UpdateNoteUseCase } from 'src/modules/note/useCases/updateNoteUseCase/updateNoteUseCase';
+import { DeleteNoteUseCase } from 'src/modules/note/useCases/deleteNoteUseCase/deleteNoteUseCase';
 
 @Module({
   imports: [DatabaseModule],
@@ -14,6 +15,7 @@ import { UpdateNoteUseCase } from 'src/modules/note/useCases/updateNoteUseCase/u
     FindAllNotesUseCase,
     FindByIdNoteUseCase,
     UpdateNoteUseCase,
+    DeleteNoteUseCase,
   ],
 })
 export class NoteModule {}

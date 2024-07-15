@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -17,6 +18,7 @@ import { findByIdNoteParams } from './dtos/findByIdNoteParams';
 import { FindByIdNoteUseCase } from 'src/modules/note/useCases/findByIdNoteUseCase/findByIdNoteUseCase';
 import { UpdateNoteUseCase } from 'src/modules/note/useCases/updateNoteUseCase/updateNoteUseCase';
 import { updateNoteBody } from './dtos/updateNoteBody';
+import { DeleteNoteUseCase } from 'src/modules/note/useCases/deleteNoteUseCase/deleteNoteUseCase';
 
 @ApiTags('note')
 @Controller('notes')
@@ -26,6 +28,7 @@ export class NoteController {
     private findAllNotesUseCase: FindAllNotesUseCase,
     private findByIdNoteUseCase: FindByIdNoteUseCase,
     private updateNoteUseCase: UpdateNoteUseCase,
+    private deleteNoteUseCase: DeleteNoteUseCase,
   ) {}
 
   @Post()
@@ -69,7 +72,6 @@ export class NoteController {
     return NoteViewModel.toHttp(note);
   }
 
-  // PUT /notes/:id - Atualizar uma nota específica
   @Put(':id')
   async updateNote(
     @Request() request: AuthenticatedRequestModel,
@@ -81,5 +83,16 @@ export class NoteController {
     const { title, description } = body;
 
     await this.updateNoteUseCase.execute({ id, title, description, userId });
+  }
+
+  @Delete(':id')
+  async deleteNote(
+    @Request() request: AuthenticatedRequestModel,
+    @Param() params,
+  ) {
+    const { id } = params;
+    const { id: userId } = request.user;
+
+    await this.deleteNoteUseCase.execute(id, userId);
   }
 }
