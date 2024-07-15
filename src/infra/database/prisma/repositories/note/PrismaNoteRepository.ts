@@ -27,4 +27,19 @@ export class PrismaNoteRepository implements NoteRepository {
 
     return notes.map((note) => PrismaNoteMapper.toDomain(note));
   }
+
+  async findById(id: string, userId: string): Promise<Note | null> {
+    const note = await this.prisma.note.findUnique({
+      where: {
+        id: id,
+        AND: {
+          userId,
+        },
+      },
+    });
+
+    if (!note) return null;
+
+    return PrismaNoteMapper.toDomain(note);
+  }
 }
