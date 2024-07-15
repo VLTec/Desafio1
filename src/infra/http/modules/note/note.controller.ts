@@ -1,14 +1,18 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Request } from '@nestjs/common';
 import { createNoteBody } from './dtos/createNoteBody';
 import { CreateNoteUseCase } from 'src/modules/note/useCases/createNoteUseCase/createNoteUseCase';
 import { NoteViewModel } from './viewModel/noteViewModel';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthenticatedRequestModel } from '../auth/models/authenticatedRequestModel';
+import { FindAllNotesUseCase } from 'src/modules/note/useCases/findAllNotesUseCase/findAllNotesUseCase';
 
 @ApiTags('note')
 @Controller('notes')
 export class NoteController {
-  constructor(private createNoteUseCase: CreateNoteUseCase) {}
+  constructor(
+    private createNoteUseCase: CreateNoteUseCase,
+    private findAllNotesUseCase: FindAllNotesUseCase,
+  ) {}
 
   @Post()
   async createNote(
@@ -25,5 +29,16 @@ export class NoteController {
     });
 
     return NoteViewModel.toHttp(note);
+  }
+
+  @Get()
+  async findAll(@Request() request: AuthenticatedRequestModel) {
+    const {
+      user: { id },
+    } = request;
+
+    const notes = await this.findAllNotesUseCase.execute({ userId: id });
+
+    return notes.map((note) => NoteViewModel.toHttp(note));
   }
 }
