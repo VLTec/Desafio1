@@ -42,4 +42,15 @@ export class PrismaNoteRepository implements NoteRepository {
 
     return PrismaNoteMapper.toDomain(note);
   }
+
+  async update(data: Note) {
+    const note = PrismaNoteMapper.toPrisma(data);
+
+    await this.prisma.note.update({
+      data: note,
+      where: {
+        id: note.id,
+      },
+    });
+  }
 }

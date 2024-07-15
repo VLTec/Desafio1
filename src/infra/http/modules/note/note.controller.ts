@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Request,
+} from '@nestjs/common';
 import { createNoteBody } from './dtos/createNoteBody';
 import { CreateNoteUseCase } from 'src/modules/note/useCases/createNoteUseCase/createNoteUseCase';
 import { NoteViewModel } from './viewModel/noteViewModel';
@@ -7,6 +15,8 @@ import { AuthenticatedRequestModel } from '../auth/models/authenticatedRequestMo
 import { FindAllNotesUseCase } from 'src/modules/note/useCases/findAllNotesUseCase/findAllNotesUseCase';
 import { findByIdNoteParams } from './dtos/findByIdNoteParams';
 import { FindByIdNoteUseCase } from 'src/modules/note/useCases/findByIdNoteUseCase/findByIdNoteUseCase';
+import { UpdateNoteUseCase } from 'src/modules/note/useCases/updateNoteUseCase/updateNoteUseCase';
+import { updateNoteBody } from './dtos/updateNoteBody';
 
 @ApiTags('note')
 @Controller('notes')
@@ -15,6 +25,7 @@ export class NoteController {
     private createNoteUseCase: CreateNoteUseCase,
     private findAllNotesUseCase: FindAllNotesUseCase,
     private findByIdNoteUseCase: FindByIdNoteUseCase,
+    private updateNoteUseCase: UpdateNoteUseCase,
   ) {}
 
   @Post()
@@ -56,5 +67,19 @@ export class NoteController {
     const note = await this.findByIdNoteUseCase.execute(id, userId);
 
     return NoteViewModel.toHttp(note);
+  }
+
+  // PUT /notes/:id - Atualizar uma nota específica
+  @Put(':id')
+  async updateNote(
+    @Request() request: AuthenticatedRequestModel,
+    @Body() body: updateNoteBody,
+    @Param() params,
+  ) {
+    const { id } = params;
+    const { id: userId } = request.user;
+    const { title, description } = body;
+
+    await this.updateNoteUseCase.execute({ id, title, description, userId });
   }
 }
