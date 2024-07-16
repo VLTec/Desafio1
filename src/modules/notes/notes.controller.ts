@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, NotFoundException, Req } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { CreateNoteDto, UpdateNoteDto } from './note.dto';
-import { ApiTags, ApiOperation, ApiCreatedResponse, ApiNotFoundResponse } from '@nestjs/swagger'; // Importações adicionadas
+import { ApiTags, ApiOperation, ApiCreatedResponse, ApiNotFoundResponse } from '@nestjs/swagger';
 
-@ApiTags('notes') // Tag para agrupar endpoints relacionados a notes no Swagger
+@ApiTags('notes')
 @Controller('notes')
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
@@ -11,9 +11,10 @@ export class NotesController {
   @ApiOperation({ summary: 'Create a new note' })
   @ApiCreatedResponse({ description: 'The note has been successfully created.' })
   @Post()
-  create(@Body() createNoteDto: CreateNoteDto) {
-    const newNote = this.notesService.create(createNoteDto);
-    // Enviar email aqui (não implementado diretamente no exemplo)
+  create(@Body() createNoteDto: CreateNoteDto, @Req() request) {
+    const userEmail = request.user.email; 
+
+    const newNote = this.notesService.create(createNoteDto, userEmail); 
     return newNote;
   }
 
