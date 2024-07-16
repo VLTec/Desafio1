@@ -17,4 +17,15 @@ model User {
   password  String
   createdAt DateTime
   updatedAt DateTime @updatedAt
+  Note      Note[]
+}
+
+model Note {
+  id            String   @id
+  title         String
+  createdByUser User     @relation(fields: [createdBy], references: [id])
+  createdBy     String
+  description   String
+  createdAt     DateTime
+  updatedAt     DateTime @updatedAt
 }
