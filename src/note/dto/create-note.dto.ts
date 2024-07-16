@@ -11,7 +11,8 @@ export class CreateNoteDto {
   @ApiProperty()
   @IsString()
   @MaxLength(500)
-  description: string | null;
+  @IsOptional()
+  description?: string | null;
 
   @ApiProperty()
   @IsString()

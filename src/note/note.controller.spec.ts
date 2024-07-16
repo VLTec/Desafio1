@@ -62,7 +62,6 @@ describe('NoteController', () => {
   describe('update', () => {
     it('should update a note', async () => {
       const updateNoteDto: UpdateNoteDto = {
-        id: 'Updated Id',
         title: 'Updated Note',
         description: 'Updated description',
         userId: 'Updated userId',

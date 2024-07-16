@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
@@ -53,17 +53,31 @@ export class NoteService {
   }
 
   async update(id: string, updateNoteDto: UpdateNoteDto) {
-    const notes = await this.prismaService.note.update({
+    const note = await this.prismaService.note.findUnique({ where: { id } });
+
+    if (!note) {
+      throw new BadRequestException('Note not found!');
+    }
+
+    const notesUpdate = await this.prismaService.note.update({
       where: { id },
       data: updateNoteDto,
     });
-    return notes;
+
+    return notesUpdate;
   }
 
   async remove(id: string) {
-    const notes = await this.prismaService.note.delete({
+    const note = await this.prismaService.note.findUnique({ where: { id } });
+
+    if (!note) {
+      throw new BadRequestException('Note not found!');
+    }
+
+    const notesRemove = await this.prismaService.note.delete({
       where: { id },
     });
-    return notes;
+
+    return notesRemove;
   }
 }
