@@ -1,21 +1,13 @@
-import { UserRepositoryInMemory } from "src/modules/user/repositories/UserRepositoryInMemory";
 import { NoteRepositoryInMemory } from "../../repositories/NoteRepositoryInMemory";
-
 import { CreateNoteUseCase } from "./createNoteUseCase";
 
 let createNoteUseCase: CreateNoteUseCase;
-let userRepositoryInMemory: UserRepositoryInMemory;
 let noteRepositoryInMemory: NoteRepositoryInMemory;
 
 describe('Create Note Use Case', () => {
   beforeEach(async () => {
     noteRepositoryInMemory = new NoteRepositoryInMemory();
-    userRepositoryInMemory = new UserRepositoryInMemory();
-    meilerRepositoryInMemory = new MeilerRepositoryInMemory();
-    createNoteUseCase = new CreateNoteUseCase(
-      noteRepositoryInMemory,
-      userRepositoryInMemory,
-    );
+    createNoteUseCase = new CreateNoteUseCase(noteRepositoryInMemory);
   });
 
   it('Should be able to create a new note', async () => {

@@ -9,6 +9,7 @@ import { GetAllNoteUseCase } from 'src/modules/notes/useCases/getAllNoteUseCase/
 import { GetNoteByIdUseCase } from 'src/modules/notes/useCases/getNoteByIdUseCase/getNoteByIdUseCase';
 import { UpdateNoteUseCase } from 'src/modules/notes/useCases/updateNoteUseCase/updateNoteUseCase';
 import { DeleteNoteUseCase } from 'src/modules/notes/useCases/deleteNoteUseCase/deleteNoteUseCase';
+import { MeilerService } from 'src/modules/meiler/service/meiler.service';
 
 @ApiTags('notes')
 @Controller('notes')
@@ -19,6 +20,7 @@ export class NotesController {
     private readonly getNoteByIdUseCase: GetNoteByIdUseCase,
     private readonly updateNoteUseCase: UpdateNoteUseCase,
     private readonly deleteNoteUseCase: DeleteNoteUseCase,
+    private readonly meilerService: MeilerService,
   ) {}
 
   @Post()
@@ -30,6 +32,21 @@ export class NotesController {
       description,
       user_id: user.id,
     })
+
+    const message = await this.meilerService.sendEmail({
+      from: {
+        name: "suporte@desafioApp.com.br",
+        address: "DesafioApp",
+      },
+      recipients: [{
+        name: user.name,
+        address: user.email
+      }],
+      subject: 'Suporte | Nova nota criada',
+      html: `<p>Nota ${title} Criada com sucesso!</p>`,
+    })
+
+    console.log('message =>> ', message);
 
     return NoteViewModel.toHttp(note)
   }
