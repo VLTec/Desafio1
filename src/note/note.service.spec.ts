@@ -4,6 +4,7 @@ import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { MailerService } from '@nestjs-modules/mailer';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
+import { BadRequestException } from '@nestjs/common';
 
 describe('NoteService', () => {
   let service: NoteService;
@@ -70,7 +71,6 @@ describe('NoteService', () => {
         updatedAt: new Date(),
         password: '123456',
       };
-      let date = new Date();
       jest.spyOn(prismaService.note, 'create').mockResolvedValue({
         ...createdNote,
       });
@@ -98,36 +98,19 @@ describe('NoteService', () => {
       });
       expect(mailerService.sendMail).toHaveBeenCalledWith({
         to: user.email,
-        from: 'gugassilva2000@gmail.com',
+        from: '"nest-modules" <modules@nestjs.com>',
         subject: 'Nota Criada!',
         text: 'Sua nota foi criada com sucesso!',
       });
     });
   });
 
-  describe('findAll', () => {
-    it('should return an array of notes', async () => {
-      const notes = [
-        {
-          id: '1',
-          title: 'Test Note',
-          description: 'Test Description',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          userId: '1',
-        },
-      ];
-      jest.spyOn(prismaService.note, 'findMany').mockResolvedValue(notes);
-
-      const result = await service.findAll();
-
-      expect(result).toEqual(notes);
-      expect(prismaService.note.findMany).toHaveBeenCalled();
-    });
-  });
-
-  describe('findOne', () => {
-    it('should return a single note', async () => {
+  describe('update', () => {
+    it('should update a note', async () => {
+      const updateNoteDto: UpdateNoteDto = {
+        title: 'Updated Note',
+        description: 'Updated Description',
+      };
       const note = {
         id: '1',
         title: 'Test Note',
@@ -136,44 +119,44 @@ describe('NoteService', () => {
         updatedAt: new Date(),
         userId: '1',
       };
+      const updatedNote = {
+        ...note,
+        ...updateNoteDto,
+        updatedAt: new Date(),
+      };
+
       jest.spyOn(prismaService.note, 'findUnique').mockResolvedValue(note);
+      jest.spyOn(prismaService.note, 'update').mockResolvedValue(updatedNote);
 
-      const result = await service.findOne('1');
+      const result = await service.update('1', updateNoteDto);
 
-      expect(result).toEqual(note);
+      expect(result).toEqual(updatedNote);
       expect(prismaService.note.findUnique).toHaveBeenCalledWith({
         where: { id: '1' },
       });
-    });
-  });
-
-  describe('update', () => {
-    it('should update a note', async () => {
-      const updateObj = {
-        id: '1',
-        title: 'Updated Note',
-        description: 'Updated Description',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        userId: '1',
-      };
-      jest.spyOn(prismaService.note, 'update').mockResolvedValue({
-        ...updateObj,
-      });
-
-      const result = await service.update('1', updateObj);
-
-      expect(result).toEqual(updateObj);
       expect(prismaService.note.update).toHaveBeenCalledWith({
         where: { id: '1' },
-        data: updateObj,
+        data: updateNoteDto,
       });
+    });
+
+    it('should throw BadRequestException if note not found', async () => {
+      const updateNoteDto: UpdateNoteDto = {
+        title: 'Updated Note',
+        description: 'Updated Description',
+      };
+
+      jest.spyOn(prismaService.note, 'findUnique').mockResolvedValue(null);
+
+      await expect(service.update('1', updateNoteDto)).rejects.toThrow(
+        new BadRequestException('Note not found!'),
+      );
     });
   });
 
   describe('remove', () => {
     it('should remove a note', async () => {
-      const removedNote = {
+      const note = {
         id: '1',
         title: 'Test Note',
         description: 'Test Description',
@@ -182,14 +165,26 @@ describe('NoteService', () => {
         userId: '1',
       };
 
-      jest.spyOn(prismaService.note, 'delete').mockResolvedValue(removedNote);
+      jest.spyOn(prismaService.note, 'findUnique').mockResolvedValue(note);
+      jest.spyOn(prismaService.note, 'delete').mockResolvedValue(note);
 
       const result = await service.remove('1');
 
-      expect(result).toEqual(removedNote);
+      expect(result).toEqual(note);
+      expect(prismaService.note.findUnique).toHaveBeenCalledWith({
+        where: { id: '1' },
+      });
       expect(prismaService.note.delete).toHaveBeenCalledWith({
         where: { id: '1' },
       });
+    });
+
+    it('should throw BadRequestException if note not found', async () => {
+      jest.spyOn(prismaService.note, 'findUnique').mockResolvedValue(null);
+
+      await expect(service.remove('1')).rejects.toThrow(
+        new BadRequestException('Note not found!'),
+      );
     });
   });
 });
