@@ -7,11 +7,13 @@ import { GetNotesUseCase } from 'src/modules/note/useCases/getNotesUseCase/getNo
 import { DeleteNoteUseCase } from 'src/modules/note/useCases/deleteNoteUseCase/deleteNoteUseCase';
 import { UpdateNoteUseCase } from 'src/modules/note/useCases/updateNoteUseCase/updateNoteUseCase';
 import { UserModule } from '../user/user.module';
+import { MailModule } from '../../../../modules/mail/mail.module';
 
 @Module({
   imports: [
     DatabaseModule,
     UserModule,
+    MailModule
   ],
   controllers: [NoteController],
   providers: [

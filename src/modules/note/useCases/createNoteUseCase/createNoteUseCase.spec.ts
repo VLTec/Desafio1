@@ -7,7 +7,9 @@ let noteRepositoryInMemory: NoteRepositoryInMemory;
 describe('Create Note', () => {
     beforeEach(async () => {
         noteRepositoryInMemory = new NoteRepositoryInMemory()
-	 createNoteUseCase = new CreateNoteUseCase(noteRepositoryInMemory)
+        createNoteUseCase = new CreateNoteUseCase(noteRepositoryInMemory, {
+            async sendMail() {}
+        })
     })
 
     it('should be able to create a note', async () => {
