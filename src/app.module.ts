@@ -9,6 +9,7 @@ import { env } from './env';
 
 import { ConfigModule } from '@nestjs/config'
 import { NoteModule } from './infra/http/modules/note/note.module';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { NoteModule } from './infra/http/modules/note/note.module';
     UserModule,
     AuthModule,
     NoteModule,
+    MailModule
   ],
   controllers: [],
   providers: [
