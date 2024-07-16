@@ -8,6 +8,7 @@ import { JwtAuthGuard } from './infra/http/modules/auth/guards/jwtAuth.guard';
 import { env } from './env';
 
 import { ConfigModule } from '@nestjs/config'
+import { NoteModule } from './infra/http/modules/note/note.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ConfigModule } from '@nestjs/config'
     DatabaseModule,
     UserModule,
     AuthModule,
+    NoteModule,
   ],
   controllers: [],
   providers: [
