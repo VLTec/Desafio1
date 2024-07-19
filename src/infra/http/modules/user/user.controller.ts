@@ -11,7 +11,6 @@ import { Public } from '../auth/decorators/isPublic';
 export class UserController {
   constructor(private createUserUseCase: CreateUserUseCase) {}
 
-  @Public()
   @Post()
   async createUser(@Body() body: CreateUserBody) {
     const { email, name, password } = body;

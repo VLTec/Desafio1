@@ -15,6 +15,7 @@ import { Public } from './decorators/isPublic';
 import { ApiTags } from '@nestjs/swagger';
 import { SignUpUseCase } from 'src/modules/auth/useCases/signUpUseCase/signUpUseCase';
 import { SignUpBody } from './dtos/SignUpBody';
+import { UserViewModel } from '../user/viewModel/userViewModel';
 
 @ApiTags('auth')
 @Controller()
@@ -41,10 +42,12 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   async signUp(@Body() body: SignUpBody) {
     const { email, name, password } = body;
-    await this.signUpUseCase.execute({
+    const user = await this.signUpUseCase.execute({
       email,
       name,
       password,
     });
+
+    return UserViewModel.toHttp(user)
   }
 }
