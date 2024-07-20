@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { UserModule } from './infra/http/modules/user/user.module';
 import { DatabaseModule } from './infra/database/database.module';
 import { AuthModule } from './infra/http/modules/auth/auth.module';
@@ -8,6 +8,7 @@ import { JwtAuthGuard } from './infra/http/modules/auth/guards/jwtAuth.guard';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { env } from './env';
 import { NoteModule } from './infra/http/modules/note/note.module';
+import { AuthMiddleware } from './infra/http/modules/auth/middleware/auth.middleware';
 @Module({
   imports: [DatabaseModule, UserModule, NoteModule, AuthModule, 
     MailerModule.forRoot({
@@ -28,4 +29,12 @@ import { NoteModule } from './infra/http/modules/note/note.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes(
+        { path: 'notes', method: RequestMethod.GET },
+      );
+  }
+}

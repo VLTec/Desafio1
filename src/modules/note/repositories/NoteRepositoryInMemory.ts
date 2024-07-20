@@ -22,12 +22,14 @@ export class NoteRepositoryInMemory implements NoteRepository {
         return note;
     }
 
-    async findAll(): Promise<Note[] | null> {
+    async findAll(userId: string): Promise<Note[] | null> {
         if (this.notes.length === 0) {
             return null;
         }
 
-        return this.notes;
+        const filteredNotes = this.notes.filter((n) => n.userId === userId);
+
+        return filteredNotes;
     }
 
     async delete(id: string): Promise<void> {

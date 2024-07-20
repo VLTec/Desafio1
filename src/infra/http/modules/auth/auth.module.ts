@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from 'src/modules/auth/strategies/jwt.strategy';
 import { env } from 'src/env';
 import { SignUpUseCase } from 'src/modules/auth/useCases/signUpUseCase/signUpUseCase';
+import { AuthMiddleware } from './middleware/auth.middleware';
 
 @Module({
   imports: [

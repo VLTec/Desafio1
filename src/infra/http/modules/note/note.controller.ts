@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Delete, Param } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Delete, Param, Req } from "@nestjs/common";
 import { CreateNoteUseCase } from "src/modules/note/useCases/createNoteUseCase/createNoteUseCase";
 import { UpdateNoteUseCase } from "src/modules/note/useCases/updateNoteUseCase/updateNoteUseCase";
 import { GetNoteUseCase } from "src/modules/note/useCases/getNoteUseCase/getNoteUseCase";
@@ -13,6 +13,9 @@ import { Public } from "../auth/decorators/isPublic";
 import { GetAllNotesUseCase } from "src/modules/note/useCases/getAllNotesUseCase/getAllNotesUseCase";
 import { MailerServices } from "../../../services/mailer/mailer.service"; 
 import { UserRepository } from "src/modules/user/repositories/UserRepository";
+import { Request } from "express";
+import { AuthenticatedRequestModel } from "../auth/models/authenticatedRequestModel";
+import { AuthRequest } from "../auth/middleware/auth.middleware";
 
 @ApiTags('note')
 @Controller('notes')
@@ -74,8 +77,17 @@ export class NoteController {
 
     @Public()
     @Get()
-    async getAllNotes() {
-        const notes = await this.getAllNotesUseCase.execute();
+    async getAllNotes(@Req() request: Request) {
+        const userId = request['userId'];
+
+        if(!userId) {
+            return
+        }
+
+       const notes = await this.getAllNotesUseCase.execute({
+            userId
+        });
+
         return notes.map((note) => NoteViewModel.toHttp(note));
     }
 

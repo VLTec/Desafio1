@@ -6,7 +6,9 @@ import { PrismaService } from "../../prisma.service";
 
 @Injectable()
 export class PrismaNoteRepository implements NoteRepository {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService
+    ) {}
 
     async create(note: Note): Promise<void> {
         const noteRaw = PrismaNoteMapper.toPrisma(note);
@@ -40,8 +42,14 @@ export class PrismaNoteRepository implements NoteRepository {
         return PrismaNoteMapper.toDomain(note);
     }
 
-    async findAll(): Promise<Note[] | null> {
-        const notes = await this.prisma.note.findMany({ orderBy: { updatedAt: 'asc' } });
+    async findAll(userId: string): Promise<Note[] | null> {
+        const notes = await this.prisma.note.findMany({ 
+            orderBy: { updatedAt: 'asc' },
+            where: {
+                userId
+            }
+            
+        });
 
         if (!notes) return null
 
